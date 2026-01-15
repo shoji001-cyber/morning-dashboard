@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Morning Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Optional for icons, using Mock SVG if fails -->
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">N</div>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#"><span class="icon">🏠</span> <span class="label">ホーム</span></a></li>
+                <li><a href="#" id="openSettingsBtn"><span class="icon">⚙️</span> <span class="label">設定</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>AI Morning Dashboard</h1>
+                    <button id="refreshBtn" class="refresh-btn">🔄 Update Data</button>
+                </div>
+                <div class="user-profile">
+                    <button id="aiSummaryBtn" class="ai-btn">✨ AI要約を実行</button>
+                    <span class="notification-icon">🔔</span>
+                    <div class="avatar">👤</div>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- Main Section: News Feed (was Chart) -->
+                <section class="main-news-section glass-panel">
+                    <div class="section-header">
+                        <h2>📰 朝のニュースフィード (NewsAPI)</h2>
+                        <div class="news-controls">
+                            <span class="badge">生成AI</span>
+                            <span class="badge">家電</span>
+                            <span class="badge">国政</span>
+                        </div>
+                    </div>
+                    <div class="news-feed-container" id="newsList">
+                        <!-- News Items will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Right Column -->
+                <div class="right-column">
+                    <!-- Top: Weather for Osaki -->
+                    <section class="weather-section-large glass-panel">
+                        <h3>📍 鹿児島県 大崎町</h3>
+                        <div class="weather-large-content" id="weatherWidget">
+                            <div class="loader">Loading Weather...</div>
+                        </div>
+                    </section>
+
+                    <!-- Bottom: Stock Info -->
+                    <section class="stock-section-compact glass-panel">
+                        <h3>📈 Market Watch</h3>
+                        <div class="stock-list" id="stockList">
+                            <!-- Items will be injected by JS -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="settingsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>⚙️ API Settings</h2>
+                <button id="closeSettingsBtn" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">APIキーはブラウザのLocalStorageに保存されます。サーバーには送信されません。</p>
+
+                <div class="input-group">
+                    <label>Finnhub API Key (Stock)</label>
+                    <input type="password" id="finnhubKey" placeholder="Finnhub API Key">
+                </div>
+
+                <div class="input-group">
+                    <label>Gemini API Key (AI)</label>
+                    <input type="password" id="geminiKey" placeholder="Gemini API Key">
+                </div>
+
+                <div class="input-group">
+                    <label>NewsAPI Key (News)</label>
+                    <input type="password" id="newsApiKey" placeholder="News API Key">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettingsBtn" class="save-btn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
