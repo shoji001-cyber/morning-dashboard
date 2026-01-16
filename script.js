@@ -136,30 +136,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    async function fetchNewsFromAPI() {
-        const apiKey = getApiKey('news');
-        if (!apiKey) {
-            console.log('NewsAPI key not set, utilizing mock data.');
+async function fetchNewsFromAPI() {
+    const apiKey = getApiKey('news');
+    if (!apiKey) {
+        currentNewsData = mockNews;
+        return mockNews;
+    }
+
+    try {
+        const query = encodeURIComponent('生成AI OR 家電 OR 政治');
+        const apiUrl = `https://newsapi.org/v2/everything?q=${query}&sortBy=publishedAt&pageSize=6&language=jp&apiKey=${apiKey}`;
+
+        // 【重要】426エラー回避のため、CORSプロキシを経由させる
+        const proxiedUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+
+        const res = await fetch(proxiedUrl);
+        if (!res.ok) throw new Error(`NewsAPI Proxy Error: ${res.status}`);
+        
+        const responseData = await res.json();
+        // alloriginsは結果が 'contents' という文字列で返ってくるのでパースする
+        const data = JSON.parse(responseData.contents);
+
+        if (!data.articles || data.articles.length === 0) {
             currentNewsData = mockNews;
             return mockNews;
         }
 
-        try {
-            // "生成AI", "家電", "日本政治" などのキーワードで検索
-            const query = encodeURIComponent('生成AI OR 家電 OR 政治');
-            const url = `https://newsapi.org/v2/everything?q=${query}&sortBy=publishedAt&pageSize=6&language=jp&apiKey=${apiKey}`;
-
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`NewsAPI Error: ${res.status}`);
-            const data = await res.json();
-
-            if (!data.articles || data.articles.length === 0) {
-                currentNewsData = mockNews;
-                return mockNews;
-            }
-
-            currentNewsData = data.articles.map(article => {
-                // タイトルからカテゴリを簡易判定
+        currentNewsData = data.articles.map(article => {
+            // ... (ここから下のカテゴリ判定ロジックは今のままでOK)
                 let topic = 'ニュース';
                 let tagClass = 'tag-politics'; // default
                 const title = article.title || '';
@@ -561,3 +565,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial Calls for New Features (Execute via updateAllData to set initial timestamp)
     updateAllData();
 });
+
