@@ -618,4 +618,61 @@ body::after {
     to {
         opacity: 1;
     }
+
+}
+/* ==========================================
+   スマホ・レスポンシブ対応
+   ========================================== */
+@media (max-width: 768px) {
+    /* 全体のレイアウトを縦並びに変更 */
+    .dashboard-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    /* サイドバーを上部に配置、またはメニュー化 */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+        flex-direction: row; /* 横に並べる */
+        justify-content: space-around;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    /* サイドバー内のテキストを隠してアイコンだけにする（省スペース） */
+    .sidebar-nav span {
+        display: none;
+    }
+
+    /* メインコンテンツの余白調整 */
+    .main-content {
+        padding: 1rem;
+        overflow-y: visible;
+    }
+
+    /* ニュースリストを1列に変更 */
+    .news-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* 株価リストもスマホで見やすく */
+    .stock-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2列にする */
+        gap: 0.5rem;
+    }
+
+    .stock-item {
+        margin-bottom: 0;
+    }
+
+    /* モーダル（設定画面）の幅を広げる */
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+        padding: 1.5rem;
+    }
 }
